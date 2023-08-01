@@ -4,10 +4,10 @@ public class MyArrayList {
 
     private Object[] data;
     private int size;
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int rozmir = 10;
 
     public MyArrayList() {
-        data = new Object[DEFAULT_CAPACITY];
+        data = new Object[rozmir];
         size = 0;
     }
 
