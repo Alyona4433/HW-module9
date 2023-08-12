@@ -1,19 +1,19 @@
 package arrayList;
 
-public class MyArrayList {
+public class MyArrayList<T> {
 
-    private Object[] data;
+    private T[] data;
     private int size;
-    private static final int rozmir = 10;
+    private static final int DEFAULT_CAPACITY = 16;
 
     public MyArrayList() {
-        data = new Object[rozmir];
+        data = (T[]) new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
 
-    public Object get(int index) {
-
+    public T get(int index) {
+        checkIndex(index);
         return data[index];
     }
 
@@ -23,19 +23,21 @@ public class MyArrayList {
 
 
     public void remove(int index) {
-        data[size - 1] = null; // Let the garbage collector handle the removed object
+        checkIndex(index);
+        for (int i = index; i < size - 1; i++) {
+            data[i] = data[i + 1];
+        }
+        data[size - 1] = null;
         size--;
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            data[i] = null;
-        }
+        data = (T[]) new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
 
-    public void add(Object value) {
+    public void add(T value) {
         capacity(size + 1);
         data[size] = value;
         size++;
@@ -44,9 +46,15 @@ public class MyArrayList {
     private void capacity(int minCapacity) {
         if (minCapacity > data.length) {
             int newCapacity = Math.max(data.length * 2, minCapacity);
-            Object[] newData = new Object[newCapacity];
+            T[] newData = (T[]) new Object[newCapacity];
             System.arraycopy(data, 0, newData, 0, size);
             data = newData;
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
         }
     }
 
