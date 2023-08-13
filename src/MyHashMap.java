@@ -11,6 +11,7 @@ public class MyHashMap <K, V> {
     }
 
     public void put(K key, V value) {
+        int hash = (key == null) ? 0: key.hashCode();
         int hash = key.hashCode();
         int index = getIndex(hash);
 
@@ -46,6 +47,8 @@ public class MyHashMap <K, V> {
 
         for (Node<K,V> node : buckets) {
             while (node != null) {
+                int newIndex = getIndex((node.key == null) ? 0 : node.key.hashCode(), newCapacity);
+
                 int newIndex = getIndex(node.key.hashCode(), newCapacity);
                 Node<K, V> newNode = new Node<>(node.key, node.value);
 
@@ -66,7 +69,9 @@ public class MyHashMap <K, V> {
         buckets = newBuckets;
     }
 
-    public void remove(Object key) {
+    public void remove(K key) {
+        int hash = (key == null) ? 0 : key.hashCode();
+
         int hash = key.hashCode();
         int index = getIndex(hash);
 
@@ -97,7 +102,9 @@ public class MyHashMap <K, V> {
         return size;
     }
 
-    public Object get(Object key) {
+    public V get(K key) {
+        int hash = (key == null) ? 0 : key.hashCode();
+
         int hash = key.hashCode();
         int index = getIndex(hash);
 
@@ -112,7 +119,7 @@ public class MyHashMap <K, V> {
     }
 
     private int getIndex(int hash) {
-        return getIndex(hash, buckets.length);;
+        return getIndex(hash, buckets.length);
     }
 
     private int getIndex(int hash, int capacity) {
